@@ -3,13 +3,17 @@
 #include <ncurses.h>
 #include <unistd.h>
 #include <cstring>
-#include "window.h"
-#include "windowStore.h"
+#include "./window.h"
+#include "./windowStore.h"
 #include <stdbool.h>
+#include <dlfcn.h>
+#include "./apiSymbolsStore.h"
 
 THDL* movingWindow = NULL;
 bool moving_window = false;
 bool debugInfo = false;
+
+typedef void (*twnEntry_f)(struct apiSymbolsStore);
 
 int main(int argc, char** argv){
   initscr();
@@ -39,9 +43,24 @@ int main(int argc, char** argv){
   secondW.h = 10;
 
   mousemask(ALL_MOUSE_EVENTS, NULL);
-
+  
   appendWindow(&mainWindow);
   appendWindow(&secondW);
+
+  apiSymbolsStore symbols;
+  symbols.appendWindow = appendWindow; 
+  symbols.removeWindowByTitle = removeWindowByTitle;
+  symbols.getWindowByTitle = getWindowByTitle;
+  symbols.getWindowByIndex = getWindowByIndex;
+  symbols.getWindowStoreLength = getWindowStoreLength;
+
+  void *handle;
+  twnEntry_f twnEntry;
+  handle = dlopen("./testApi.so", RTLD_NOW);
+
+  twnEntry = (twnEntry_f)dlsym(handle, "twnEntry");
+
+  twnEntry(symbols);
 
   MEVENT mouseEvent;
 
@@ -117,5 +136,6 @@ int main(int argc, char** argv){
     }
   }
 
+  dlclose(handle);
   endwin();
 }

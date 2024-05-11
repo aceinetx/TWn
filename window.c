@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <ncurses.h>
 
-struct THDL {
+typedef struct THDL {
   char wndTitle[25];
   char className[25];
 
@@ -11,9 +11,7 @@ struct THDL {
   int w;
   int h;
 
-  THDL* parent = NULL;
+  struct THDL* parent;
 
-  void (*thdlCallback)(THDL*, int)=NULL;
-};
-
-//typedef void (*thdlCallback_f)(THDL*, int);
+  void (*thdlCallback)(struct THDL*, int);
+} THDL;

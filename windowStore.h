@@ -1,6 +1,7 @@
 #include <vector>
+
 #include <cstring>
-#include "window.h"
+#include "./window.h"
 
 inline std::vector<THDL*> window_store;
 
