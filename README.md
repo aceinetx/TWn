@@ -5,3 +5,5 @@
 - Window (of course)
 - Button
 - Input
+## API Documentation
+[here](APIDOCS.md)
