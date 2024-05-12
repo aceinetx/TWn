@@ -65,7 +65,7 @@ int counter=0; // counter
 void ButtonCallback(THDL* sender, int message){
   if(message == CALLBACK_CLICKED){
     counter++; // counter goes ++
-    snprintf(label.wndTitle, 50, "Counter: %d", counter); // 50 is maximum length for wndTitle and className
+    snprintf(label.wndTitle, 100, "Counter: %d", counter); // 100 is maximum length for wndTitle and className
   }
 }
 
@@ -90,7 +90,7 @@ int counter=0; // counter
 void ButtonCallback(THDL* sender, int message){
   if(message == CALLBACK_CLICKED){
     counter++; // counter goes ++
-    snprintf(label.wndTitle, 50, "Counter: %d", counter); // 50 is maximum length for wndTitle and className
+    snprintf(label.wndTitle, 100, "Counter: %d", counter); // 100 is maximum length for wndTitle and className
   }
 }
 
