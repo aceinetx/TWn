@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 
 #include <cstring>
@@ -5,14 +6,12 @@
 
 inline std::vector<THDL*> window_store;
 
-inline void appendWindow(THDL* window);
+void appendWindow(THDL* window);
 
-inline void removeWindowByTitle(const char* title);
+void removeWindowByTitle(const char* title);
 
-inline THDL* getWindowByTitle(const char* title);
+THDL* getWindowByTitle(const char* title);
 
-inline THDL* getWindowByIndex(size_t idx);
+THDL* getWindowByIndex(size_t idx);
 
-inline size_t getWindowStoreLength();
-
-inline THDL* getParentWindow(THDL* childWindow);
+size_t getWindowStoreLength();

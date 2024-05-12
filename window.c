@@ -3,8 +3,8 @@
 #include <ncurses.h>
 
 typedef struct THDL {
-  char wndTitle[25];
-  char className[25];
+  char wndTitle[50];
+  char className[50];
 
   int x;
   int y;
@@ -17,6 +17,9 @@ typedef struct THDL {
   void (*thdlInputCallback)(struct THDL*, char*);
 
   int childClass;
+  int winflags;
+
+  int BUTTON_CLICKED_FRAMES=0;
 } THDL;
 
 enum CALLBACK_MESSAGES {
@@ -26,4 +29,9 @@ enum CALLBACK_MESSAGES {
 enum THDL_CHILDCLASSES {
   THDL_BUTTON = 0x0001,
   THDL_INPUT  = 0x0002,
+  THDL_LABEL  = 0x0003,
+};
+
+enum THDL_WINFLAGS {
+  THDL_NORESIZE     = 0x0001,
 };
