@@ -4,8 +4,8 @@
 #include <ncurses.h>
 
 typedef struct THDL {
-  char wndTitle[50];
-  char className[50];
+  char wndTitle[100];
+  char className[100];
 
   int x;
   int y;
