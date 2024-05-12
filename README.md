@@ -1,2 +1,2 @@
-TODO: api docs ok?
-(omg please call api function with symbols. or you'll get segfault)
+# TWn
+### Console window manager on NCurses with helpful api to make TWn applications
