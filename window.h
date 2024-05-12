@@ -11,6 +11,7 @@ typedef struct THDL {
   int y;
   int w;
   int h;
+  int uid;
 
   struct THDL* parent;
 
@@ -21,6 +22,8 @@ typedef struct THDL {
   int winflags;
 
   int BUTTON_CLICKED_FRAMES;
+
+  char hidden;
 } THDL;
 
 enum CALLBACK_MESSAGES {

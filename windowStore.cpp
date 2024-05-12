@@ -20,6 +20,18 @@ void removeWindowByTitle(const char* title){
   window_store.erase(window_store.begin() + remove_idx);
 }
 
+void removeWindowByUID(int uid){
+  int remove_idx = -1;
+  for(int i=0; i<window_store.size(); i++){
+    THDL *wnd = window_store.at(i);
+    if(wnd->uid == uid){
+      remove_idx = i;
+      break;
+    }
+  }
+  if(remove_idx != -1) window_store.erase(window_store.begin() + remove_idx);
+}
+
 THDL* getWindowByTitle(const char* title){
   for(int i=0; i<window_store.size(); i++){
     THDL *wnd = window_store.at(i);

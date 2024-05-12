@@ -10,6 +10,8 @@ void appendWindow(THDL* window);
 
 void removeWindowByTitle(const char* title);
 
+void removeWindowByUID(int uid);
+
 THDL* getWindowByTitle(const char* title);
 
 THDL* getWindowByIndex(size_t idx);

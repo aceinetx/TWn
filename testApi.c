@@ -20,7 +20,6 @@ void *twnEntry(void *sym)
   secondW.y = 10;
   secondW.w = 50;
   secondW.h = 20;
-  secondW.winflags = THDL_NORESIZE;
 
   strcpy(label.wndTitle, "Text typed: ");
   strcpy(label.className, "typed");
