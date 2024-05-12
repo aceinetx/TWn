@@ -86,7 +86,7 @@ Final code should look like that
 #include <string.h>
 
 THDL label;
-int counter=0; // how many times has been button clicked
+int counter=0; // counter
 void ButtonCallback(THDL* sender, int message){
   if(message == CALLBACK_CLICKED){
     counter++; // counter goes ++
