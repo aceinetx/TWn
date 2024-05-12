@@ -69,7 +69,7 @@ void ButtonCallback(THDL* sender, int message){
   }
 }
 
-button.thdlCallback = ButtonCallback // add callback to button
+button.thdlCallback = ButtonCallback; // add callback to button
 ```
 
 ## !! IMPORTANT
@@ -78,3 +78,64 @@ place this code at the end of twnEntry function:
 while(1){}
 ```
 This is needed to keep your application running, if you don't do that TWn will crash
+## Final code
+Final code should look like that
+```c
+#include "./apiSymbolsStore.h"
+#include "./window.h"
+#include <string.h>
+
+THDL label;
+int counter=0; // how many times has been button clicked
+void ButtonCallback(THDL* sender, int message){
+  if(message == CALLBACK_CLICKED){
+    counter++; // counter goes ++
+    snprintf(label.wndTitle, 50, "Counter: %d", counter); // 50 is maximum length for wndTitle and className
+  }
+}
+
+void* twnEntry(void *sym)
+{
+  struct apiSymbolsStore symbols;  // where we will store api functions
+  symbols = *(struct apiSymbolsStore*)sym;
+
+  THDL window;
+  strcpy(window.wndTitle, "API Window");
+  strcpy(window.className, "APIWindow");
+  window.x = 1;
+  window.y = 1;
+  window.w = 20;
+  window.h = 10;
+  symbols.appendWindow(&window);
+
+  THDL button;
+  strcpy(button.wndTitle, "Click me");
+  strcpy(button.className, "Button1");
+  button.x = 2;
+  button.y = 2;
+  button.w = 10;
+  button.h = 3;
+  button.childClass = THDL_BUTTON; // child class determines which type of element it is
+  button.parent = &window;
+  symbols.appendWindow(&button);
+  button.thdlCallback = ButtonCallback; // add callback to button
+  
+  strcpy(label.wndTitle, "Counter: 0");
+  strcpy(label.className, "CounterLabel");
+  label.x = 2;
+  label.y = 6;
+  label.w = 10;
+  label.h = 3;
+  label.childClass = THDL_LABEL;
+  label.parent = &window;
+  symbols.appendWindow(&label);
+
+  while(1){}
+}
+```
+
+## Let's compile
+gcc -o app.so app.c -shared -fPIC<br>
+nothing special
+## Testing
+Open the TWn, press x and type "./<yourcompiledappname>". If you've done everything right, you should see a window with everything we added to it
