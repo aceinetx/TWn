@@ -11,6 +11,7 @@ These are necessary to use the api
 ## Entry point
 This function determines where your application will start. In arguments it passes a symbols structure with pointers to api functions
 ```c
+THDL label;
 void* twnEntry(void *sym)
 {
   struct apiSymbolsStore symbols;  // where we will store api functions
@@ -47,7 +48,6 @@ button.childClass = THDL_BUTTON; // child class determines which type of element
 button.parent = &window;
 symbols.appendWindow(&button);
 
-THDL label;
 strcpy(label.wndTitle, "Counter: 0");
 strcpy(label.className, "CounterLabel");
 label.x = 2;
@@ -64,8 +64,12 @@ Let's make functionality!. We'll add a callback to button when clicked
 int counter=0; // how many times has been button clicked
 void ButtonCallback(THDL* sender, int message){
   if(message == CALLBACK_CLICKED){
+    counter++; // counter goes ++
+    snprintf(label.wndTitle, 50, "Counter: %d", counter); // 50 is maximum length for wndTitle and className
   }
 }
+
+button.thdlCallback = ButtonCallback // add callback to button
 ```
 
 ## !! IMPORTANT
