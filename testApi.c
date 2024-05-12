@@ -5,24 +5,19 @@
 #include "./apiSymbolsStore.h"
 #include <string.h>
 
-void twnEntry(
-  struct apiSymbolsStore symbols
+void *twnEntry(
+  void *sym
 )
 {
+  struct apiSymbolsStore symbols;
+  symbols = *(struct apiSymbolsStore*)sym;
   THDL secondW;
   strcpy(secondW.wndTitle, "Api window");
   strcpy(secondW.className, "Api window");
   secondW.x = 50;
-  secondW.y = 40;
+  secondW.y = 30;
   secondW.w = 10;
   secondW.h = 10;
-
-  //symbols.appendWindow(&secondW);
-  for(int i=0; i<symbols.getWindowStoreLength(); i++){
-    THDL* wnd = symbols.getWindowByIndex(i);
-    if(wnd->wndTitle[0] == 'T'){
-      strcpy(wnd->wndTitle, "Detected");
-    }
-  }
+  symbols.appendWindow(&secondW);
+  while(1){};
 }
-

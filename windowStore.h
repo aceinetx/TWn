@@ -14,3 +14,5 @@ inline THDL* getWindowByTitle(const char* title);
 inline THDL* getWindowByIndex(size_t idx);
 
 inline size_t getWindowStoreLength();
+
+inline THDL* getParentWindow(THDL* childWindow);

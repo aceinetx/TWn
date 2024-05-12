@@ -8,12 +8,39 @@
 #include <stdbool.h>
 #include <dlfcn.h>
 #include "./apiSymbolsStore.h"
+#include <pthread.h>
 
 THDL* movingWindow = NULL;
 bool moving_window = false;
 bool debugInfo = false;
+char latestError[256];
 
-typedef void (*twnEntry_f)(struct apiSymbolsStore);
+typedef void *(*twnEntry_f)(void*);
+
+char graphics[] = {'.', '#', ':'};
+
+bool runTWnApplication(char* fileName){
+
+  struct apiSymbolsStore symbols;
+  symbols.appendWindow = appendWindow; 
+  symbols.removeWindowByTitle = removeWindowByTitle;
+  symbols.getWindowByTitle = getWindowByTitle;
+  symbols.getWindowByIndex = getWindowByIndex;
+  symbols.getWindowStoreLength = getWindowStoreLength;
+
+  twnEntry_f twnEntry;
+  void *handle;
+  handle = dlopen(fileName, RTLD_NOW);
+  if(handle){
+    twnEntry = (twnEntry_f)dlsym(handle, "twnEntry");
+    if (dlerror() != NULL){
+      snprintf(latestError, 256, "Error loading twn application: %s", dlerror());
+    } else {
+      pthread_t dlth;
+      pthread_create(&dlth, NULL, twnEntry, &symbols);
+    }
+  }
+}
 
 int main(int argc, char** argv){
   initscr();
@@ -34,33 +61,11 @@ int main(int argc, char** argv){
   mainWindow.w = 10;
   mainWindow.h = 5;
 
-  THDL secondW;
-  strcpy(secondW.wndTitle, "Second window");
-  strcpy(secondW.className, "Second window");
-  secondW.x = 30;
-  secondW.y = 20;
-  secondW.w = 10;
-  secondW.h = 10;
-
   mousemask(ALL_MOUSE_EVENTS, NULL);
   
   appendWindow(&mainWindow);
-  appendWindow(&secondW);
 
-  apiSymbolsStore symbols;
-  symbols.appendWindow = appendWindow; 
-  symbols.removeWindowByTitle = removeWindowByTitle;
-  symbols.getWindowByTitle = getWindowByTitle;
-  symbols.getWindowByIndex = getWindowByIndex;
-  symbols.getWindowStoreLength = getWindowStoreLength;
-
-  void *handle;
-  twnEntry_f twnEntry;
-  handle = dlopen("./testApi.so", RTLD_NOW);
-
-  twnEntry = (twnEntry_f)dlsym(handle, "twnEntry");
-
-  twnEntry(symbols);
+  runTWnApplication("./testApi.so");
 
   MEVENT mouseEvent;
 
@@ -70,35 +75,54 @@ int main(int argc, char** argv){
 
     for(int i=0; i<max_y; i++){
       for(int j=0; j<max_x; j++){
-        mvprintw(i, j, ".");
+        mvprintw(i, j, "%c", graphics[0]);
       }
     }
 
 
     for(size_t i=0; i<getWindowStoreLength(); i++){
       THDL *thdl = getWindowByIndex(i);
-      for(int j=thdl->y; j<=thdl->h+thdl->y; j++){
-        for(int k=thdl->x; k<=thdl->w+thdl->x; k++){
-          mvprintw(j, k, "#");
+      if(thdl->parent == NULL){
+        for(int j=thdl->y; j<=thdl->h+thdl->y; j++){
+          for(int k=thdl->x; k<=thdl->w+thdl->x; k++){
+            mvprintw(j, k, "%c", graphics[1]);
+          }
+        }
+
+        char* newTitle;
+        if(movingWindow == thdl){
+          newTitle = (char*)malloc(strlen(thdl->wndTitle)+3);
+          snprintf(newTitle, strlen(thdl->wndTitle)+3, "o %s", thdl->wndTitle);
+        } else {
+          newTitle = (char*)malloc(strlen(thdl->wndTitle+1));
+          strcpy(newTitle, thdl->wndTitle);
+        }
+
+        mvprintw(thdl->y, thdl->x, "%s", newTitle);
+        free(newTitle);
+        newTitle = NULL;
+      }
+    }
+
+    for(size_t i=0; i<getWindowStoreLength(); i++){
+      THDL *thdl = getWindowByIndex(i);
+      if(thdl->parent != NULL){
+        THDL *parent = thdl->parent;
+        for(int j=thdl->y+parent->y; j<thdl->h+thdl->y+parent->y; j++){
+          for(int k=thdl->x+parent->x; k<thdl->w+thdl->x+parent->x; k++){
+            if(thdl->childClass == THDL_BUTTON || thdl->childClass == THDL_INPUT){
+              mvprintw(j, k, "%c", graphics[2]);
+              int text_x = thdl->x+parent->x+(thdl->w/2)-(strlen(thdl->wndTitle)/2);
+              int text_y = thdl->y+parent->y+(thdl->h/2);
+              mvprintw(text_y, text_x, "%s", thdl->wndTitle);
+            }
+          }
         }
       }
-
-      char* newTitle;
-      if(movingWindow == thdl){
-        newTitle = (char*)malloc(strlen(thdl->wndTitle)+3);
-        snprintf(newTitle, strlen(thdl->wndTitle)+3, "o %s", thdl->wndTitle);
-      } else {
-        newTitle = (char*)malloc(strlen(thdl->wndTitle+1));
-        strcpy(newTitle, thdl->wndTitle);
-      }
-
-      mvprintw(thdl->y, thdl->x, "%s", newTitle);
-      free(newTitle);
-      newTitle = NULL;
     }
 
     if(debugInfo){
-      mvprintw(0, 0, "%d %d %d", mouseEvent.y, mouseEvent.x, moving_window);
+      mvprintw(0, 0, "%d %d %d %s", mouseEvent.y, mouseEvent.x, moving_window, latestError);
     }
 
     refresh();
@@ -112,11 +136,28 @@ int main(int argc, char** argv){
       if(!moving_window){
         for(size_t i=0; i<getWindowStoreLength(); i++){
           THDL *thdl = getWindowByIndex(i);
-          if(mouseEvent.x >= thdl->x && (mouseEvent.x <= thdl->x+strlen(thdl->wndTitle) && (mouseEvent.y == thdl->y))){
-          //if(true){
-            movingWindow = thdl;
-            moving_window = true;
-            cancelMove = true;
+          if(thdl->parent == NULL){
+            if(mouseEvent.x >= thdl->x && (mouseEvent.x <= -1+thdl->x+strlen(thdl->wndTitle) && (mouseEvent.y == thdl->y))){
+              movingWindow = thdl;
+              moving_window = true;
+              cancelMove = true;
+            }
+          } else {
+            if(mouseEvent.x >= (thdl->x+thdl->parent->x) && (mouseEvent.x <= -1+thdl->x+thdl->parent->x+thdl->w) && (mouseEvent.y >= (thdl->y+thdl->parent->y) && (mouseEvent.y <= (-1+thdl->y+thdl->parent->y+thdl->h)))){
+              
+              if(thdl->thdlCallback != NULL) thdl->thdlCallback(thdl, CALLBACK_CLICKED);
+              if(thdl->childClass == THDL_INPUT){
+                char buf[256];
+                nodelay(stdscr, FALSE);
+                echo();
+                curs_set(1);
+                getnstr(buf, 256);
+                nodelay(stdscr, TRUE);
+                noecho();
+                curs_set(0);
+                if(thdl->thdlInputCallback != NULL) thdl->thdlInputCallback(thdl, buf);
+              }
+            }
           }
         }
       }
@@ -136,6 +177,5 @@ int main(int argc, char** argv){
     }
   }
 
-  dlclose(handle);
   endwin();
 }

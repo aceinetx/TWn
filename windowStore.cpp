@@ -42,3 +42,11 @@ THDL* getWindowByIndex(size_t idx){
 size_t getWindowStoreLength(){
   return window_store.size();
 }
+
+THDL* getParentWindow(THDL* childWindow){
+  for(size_t i=0; i<window_store.size(); i++){
+    if(childWindow->parent == window_store.at(i)){
+      return window_store.at(i);
+    }
+  }
+}
