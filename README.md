@@ -5,5 +5,6 @@
 - Window (of course)
 - Button
 - Input
+- Label
 ## API Documentation
 [here](APIDOCS.md)
