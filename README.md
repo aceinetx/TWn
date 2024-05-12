@@ -11,3 +11,5 @@
 [How to use](HOWTOUSE.md)
 <br>
 If you notice any segmentation faults, please publish it on issues with gdb logs
+## Known issues
+- EXTERMELY unstable on 32 bit devices (segfaults, invalid rendering)
