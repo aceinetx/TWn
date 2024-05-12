@@ -15,6 +15,7 @@ typedef struct THDL {
   void (*thdlCallback)(struct THDL*,  int); // function ran on message (e.g mouse click)
   void (*thdlInputCallback)(struct THDL*, char*); // function ran on input (when text typed)
   int childClass;       // element class (e.g button/input)
+  int winflags;         // window flags
 } THDL;
 
 // messages that are passed to second argument on thdlCallback
@@ -26,6 +27,10 @@ enum CALLBACK_MESSAGES {
 enum THDL_CLILDCLASSES {
   THDL_BUTTON = 0x0001, 
   THDL_INPUT  = 0x0002,
+};
+
+enum THDL_WINFLAGS {
+  THDL_NORESIZE = 0x0001,
 };
 ```
 
