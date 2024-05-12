@@ -61,7 +61,7 @@ symbols.appendWindow(&label);
 ## Callback
 Let's make functionality!. We'll add a callback to button when clicked
 ```c
-int counter=0; // how many times has been button clicked
+int counter=0; // counter
 void ButtonCallback(THDL* sender, int message){
   if(message == CALLBACK_CLICKED){
     counter++; // counter goes ++
