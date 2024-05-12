@@ -20,10 +20,53 @@ void* twnEntry(void *sym)
 ## Creating a window
 ```c
 THDL window;
-strcpy(window.wndTitle, "
+strcpy(window.wndTitle, "API Window");
+strcpy(window.className, "APIWindow");
+window.x = 1;
+window.y = 1;
+window.w = 20;
+window.h = 10;
 ```
-What's a THDL?: it is a structure with information required to properly render and make functionality for window<br>
+What's a THDL?: it is a structure with information required to properly render and make functionality for window/element<br>
+## Adding window
+If you run your code at this point, nothing will appear on the screen, we'll fix that now
+```c
+symbols.appendWindow(&window);
+```
+## Adding window children
+This segment explains how to add ui elements to window
+```c
+THDL button;
+strcpy(button.wndTitle, "Click me");
+strcpy(button.className, "Button1");
+button.x = 2;
+button.y = 2;
+button.w = 10;
+button.h = 3;
+button.childClass = THDL_BUTTON; // child class determines which type of element it is
+button.parent = &window;
+symbols.appendWindow(&button);
 
+THDL label;
+strcpy(label.wndTitle, "Counter: 0");
+strcpy(label.className, "CounterLabel");
+label.x = 2;
+label.y = 6;
+label.w = 10;
+label.h = 3;
+label.childClass = THDL_LABEL;
+label.parent = &window;
+symbols.appendWindow(&label);
+```
+## Callback
+Let's make functionality!. We'll add a callback to button when clicked
+```c
+int counter=0; // how many times has been button clicked
+void ButtonCallback(THDL* sender, int message){
+  if(message == CALLBACK_CLICKED){
+  }
+}
+```
 
 ## !! IMPORTANT
 place this code at the end of twnEntry function:
