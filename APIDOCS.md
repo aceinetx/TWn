@@ -5,8 +5,8 @@ How to compile: ```gcc app.c -shared -fPIC -o app.so```
 Type definitions for window, does not contain any functions.
 ```c++
 typedef struct THDL {
-  char wndTitle[25];    // window title
-  char className[25];   // window class
+  char wndTitle[100];    // window title
+  char className[100];   // window class
   int x;                // window position by x
   int y;                // window position by y
   int w;                // window width
@@ -97,7 +97,7 @@ int counter = 0;
 void onButtonClick(THDL* sender, int message){
   if(message == CALLBACK_CLICKED){
     counter++;
-    snprintf(sender->wndTitle, 25, "Counter: %d", counter);
+    snprintf(sender->wndTitle, 100, "Counter: %d", counter);
   }
 }
 
@@ -160,7 +160,7 @@ void *twnEntry(void *sym)
 THDL label;
 
 void onInput(THDL* sender, char* text){
-  snprintf(label.wndTitle, 50, "Text typed: %s", text); // update label text
+  snprintf(label.wndTitle, 100, "Text typed: %s", text); // update label text
 }
 
 void *twnEntry(void *sym)
