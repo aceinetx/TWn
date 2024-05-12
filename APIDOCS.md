@@ -74,6 +74,6 @@ void *twnEntry(void *sym) // defines the entry point for application to start
   secondW.w = 10;
   secondW.h = 10;
   symbols.appendWindow(&secondW);
-  while(1){}; // IMPORTANT: Place this infinite loop at the end of twnEntry to not unload windows you created, or you'll get segmentation fault. This infinite loop will not stop TWn from execution, because twnEntry runs in a thread
+  while(1){}; // IMPORTANT: Place this infinite loop at the end of twnEntry to not unload windows you created, or you'll get segmentation fault. This loop will not stop TWn from execution, because twnEntry runs in a thread
 }
 ```
