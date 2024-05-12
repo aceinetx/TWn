@@ -133,15 +133,12 @@ int main(int argc, char** argv){
         free(newTitle);
         newTitle = NULL;
       } else {
-        //if(thdl->parent != NULL) thdl->hidden = thdl->parent->hidden;
+        if(thdl->parent != NULL) thdl->hidden = thdl->parent->hidden;
       }
     }
 
     for(size_t i=0; i<getWindowStoreLength(); i++){
       THDL *thdl = getWindowByIndex(i);
-      if(thdl->parent != NULL){
-        thdl->hidden = thdl->parent->hidden;
-      }
       if(thdl->parent != NULL && (thdl->hidden == 0)){
         THDL *parent = thdl->parent;
         for(int j=thdl->y+parent->y; j<thdl->h+thdl->y+parent->y; j++){
@@ -199,55 +196,44 @@ int main(int argc, char** argv){
           THDL *thdl = getWindowByIndex(i);
           if(thdl->parent == NULL){
             if(thdl->hidden == 0){
-	            if(mouseEvent.x >= thdl->x && (mouseEvent.x <= -1+thdl->x+thdl->w && (mouseEvent.y == thdl->y))){
-	              movingWindow = thdl;
-	              moving_window = true;
-	              cancelMove = true;
-	            } else if(mouseEvent.x == (thdl->x+thdl->w) && (mouseEvent.y == thdl->y)){
-	              thdl->uid = rand();
-	              for(int j=0; j<getWindowStoreLength(); j++){
-	                THDL* child = getWindowByIndex(j);
-	                if(child->parent == thdl){
-	                  j--;
-	                  child->uid = rand();
-	                  removeWindowByUID(child->uid);
-	                  }
-	              }
-	              removeWindowByUID(thdl->uid);
-              }
+            if(mouseEvent.x >= thdl->x && (mouseEvent.x <= -1+thdl->x+thdl->w && (mouseEvent.y == thdl->y))){
+              movingWindow = thdl;
+              moving_window = true;
+              cancelMove = true;
+            } else if(mouseEvent.x == (thdl->x+thdl->w) && (mouseEvent.y == thdl->y)){
+                  thdl->uid = rand();
+                  for(int j=0; j<getWindowStoreLength(); j++){
+                    THDL* child = getWindowByIndex(j);
+                    if(child->parent == thdl){
+                      j--;
+                      child->uid = rand();
+                      removeWindowByUID(child->uid);
+                    }
+                  }
+                  removeWindowByUID(thdl->uid);
+                  
+                }
             }
           } else {
-            //if(mouseEvent.x >= (thdl->x+thdl->parent->x) && (mouseEvent.x <= -1+thdl->x+thdl->parent->x+thdl->w) && (mouseEvent.y >= (thdl->y+thdl->parent->y) && (mouseEvent.y <= (-1+thdl->y+thdl->parent->y+thdl->h)))){
+            if(mouseEvent.x >= (thdl->x+thdl->parent->x) && (mouseEvent.x <= -1+thdl->x+thdl->parent->x+thdl->w) && (mouseEvent.y >= (thdl->y+thdl->parent->y) && (mouseEvent.y <= (-1+thdl->y+thdl->parent->y+thdl->h)))){
 
-              bool allowed = false;
-              if(mouseEvent.x >= thdl->x+thdl->parent->x){
-                if(mouseEvent.x <= -1+thdl->x+thdl->parent->x+thdl->w){
-                  if(mouseEvent.y >= (thdl->y+thdl->parent->y)){
-                    if(mouseEvent.y <= (-1+thdl->y+thdl->parent->y+thdl->h)) allowed = true;
-                  }
-                }
+              if(thdl->hidden == 0){
+              if(thdl->childClass == THDL_BUTTON){
+                thdl->BUTTON_CLICKED_FRAMES = BUTTON_CLICKED_FRAMES_VAR;
               }
-
-
-              if(thdl->hidden == 0 && (allowed)){
-                if(thdl->childClass == THDL_BUTTON){
-                  thdl->BUTTON_CLICKED_FRAMES = BUTTON_CLICKED_FRAMES_VAR;
-                }
-                
-                if(thdl->thdlCallback != NULL) thdl->thdlCallback(thdl, CALLBACK_CLICKED);
-                
-                if(thdl->childClass == THDL_INPUT){
-                  char buf[256];
-                  nodelay(stdscr, FALSE);
-                  echo();
-                  curs_set(1);
-                  mvprintw(0, 0, "Type text: ");
-                  getnstr(buf, 256);
-                  nodelay(stdscr, TRUE);
-                  noecho();
-                  curs_set(0);
-                  if(thdl->thdlInputCallback != NULL) thdl->thdlInputCallback(thdl, buf);
-                }
+              if(thdl->thdlCallback != NULL) thdl->thdlCallback(thdl, CALLBACK_CLICKED);
+              if(thdl->childClass == THDL_INPUT){
+                char buf[256];
+                nodelay(stdscr, FALSE);
+                echo();
+                curs_set(1);
+                mvprintw(0, 0, "Type text: ");
+                getnstr(buf, 256);
+                nodelay(stdscr, TRUE);
+                noecho();
+                curs_set(0);
+                if(thdl->thdlInputCallback != NULL) thdl->thdlInputCallback(thdl, buf);
+              }
               }
             }
           }
@@ -271,6 +257,7 @@ int main(int argc, char** argv){
         
 
         movingWindow = NULL;
+      }
       }
     } else if(k == 'p'){
       debugInfo = !debugInfo;
