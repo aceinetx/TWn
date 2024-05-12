@@ -6,7 +6,8 @@
 - Button
 - Input
 - Label
-## API Documentation
-[here](APIDOCS.md)
+## Documentation
+[API](APIDOCS.md)<br>
+[How to use](HOWTOUSE.md)
 <br>
 If you notice any segmentation faults, please publish it on issues with gdb logs
