@@ -82,3 +82,68 @@ void *twnEntry(void *sym) // defines the entry point for application to start
   while(1){}; // IMPORTANT: Place this infinite loop at the end of twnEntry to not unload windows you created, or you'll get segmentation fault. This loop will not stop TWn from execution, because twnEntry runs in a thread
 }
 ```
+### Buttons
+```c
+#include "./window.h"
+#include "./apiSymbolsStore.h"
+#include <string.h>
+
+int counter = 0;
+
+void onButtonClick(THDL* sender, int message){
+  if(message == CALLBACK_CLICKED){
+    counter++;
+    snprintf(sender->wndTitle, 25, "Counter: %d", counter);
+  }
+}
+
+void onButton2Click(THDL* sender, int message){
+  if(message == CALLBACK_CLICKED){
+    sender->parent->x += 1;
+    sender->parent->y += 1;
+  }
+}
+
+void *twnEntry(void *sym)
+{
+  struct apiSymbolsStore symbols;
+  symbols = *(struct apiSymbolsStore*)sym;
+
+  THDL secondW;
+  strcpy(secondW.wndTitle, "Api window");
+  strcpy(secondW.className, "Api window");
+  secondW.x = 50;
+  secondW.y = 30;
+  secondW.w = 20;
+  secondW.h = 10;
+  secondW.winflags = THDL_NORESIZE;
+
+  THDL button;
+  strcpy(button.wndTitle, "Counter: 0");
+  strcpy(button.className, "Counter");
+  button.x = 1;
+  button.y = 2;
+  button.w = 16;
+  button.h = 3;
+  button.childClass = THDL_BUTTON;
+  button.thdlCallback = onButtonClick;
+  button.parent = &secondW;
+
+  THDL button2;
+  strcpy(button2.wndTitle, "Move window");
+  strcpy(button2.className, "Move window");
+  button2.x = 1;
+  button2.y = 6;
+  button2.w = 13;
+  button2.h = 3;
+  button2.childClass = THDL_BUTTON;
+  button2.thdlCallback = onButton2Click;
+  button2.parent = &secondW;
+
+  symbols.appendWindow(&secondW);
+  symbols.appendWindow(&button);
+  symbols.appendWindow(&button2);
+
+  while(1){}; 
+}
+```
