@@ -11,6 +11,7 @@ typedef struct THDL {
   int y;                // window position by y
   int w;                // window width
   int h;                // window height
+  int uid;              // numeric identifier for window
   struct THDL* parent;  // parent window, if not NULL, window will be defined as a children element
   void (*thdlCallback)(struct THDL*,  int); // function ran on message (e.g mouse click)
   void (*thdlInputCallback)(struct THDL*, char*); // function ran on input (when text typed)
@@ -42,6 +43,7 @@ This file contains every function to interact with window(s), and here are they
 std::vector<THDL*> window_store; // variable that stores every window and it's children
 void appendWindow(THDL* window); // add window to window_store
 void removeWindowByTitle(const char* title); // remove window from window_store by title
+void removeWindowByUID(int uid); // remove window from window_store by uid
 THDL* getWindowByTitle(const char* title);   // get window from window_store by title
 THDL* getWindowByIndex(size_t idx); // get window from window_store by index
 size_t getWindowStoreLength()       // get length of window_store
