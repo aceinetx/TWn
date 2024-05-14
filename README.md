@@ -14,3 +14,11 @@
 If you notice any segmentation faults, please publish it on issues with gdb logs
 ## Known issues
 - EXTERMELY unstable on 32 bit devices (segfaults, invalid rendering)
+## Tested devices/linux systems
+- Ubuntu 22.04 (Works perfectly)
+- Termux x64   (Works ALMOST perfectly (I noticed some color issues))
+## Planed to test
+- Arch linux
+## Work-In-Progress/Planned features
+- No-Mouse mode (WIP)
+- Multi Desktop workspaces (Planned)
