@@ -23,6 +23,8 @@ typedef struct THDL {
   int BUTTON_CLICKED_FRAMES=0;
 
   char hidden;
+
+  bool checkboxChecked;
 } THDL;
 
 enum CALLBACK_MESSAGES {
@@ -30,9 +32,10 @@ enum CALLBACK_MESSAGES {
 };
 
 enum THDL_CHILDCLASSES {
-  THDL_BUTTON = 0x0001,
-  THDL_INPUT  = 0x0002,
-  THDL_LABEL  = 0x0003,
+  THDL_BUTTON   = 0x0001,
+  THDL_INPUT    = 0x0002,
+  THDL_LABEL    = 0x0003,
+  THDL_CHECKBOX = 0x0004,
 };
 
 enum THDL_WINFLAGS {

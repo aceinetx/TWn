@@ -161,6 +161,12 @@ int main(int argc, char** argv){
               mvprintw(text_y, text_x, "%s", thdl->wndTitle);
             } else if(thdl->childClass == THDL_LABEL){
               mvprintw(thdl->y+parent->y, thdl->x+parent->x, "%s", thdl->wndTitle);
+            } else if(thdl->childClass == THDL_CHECKBOX){
+              if(thdl->checkboxChecked){
+                mvprintw(thdl->y+parent->y, thdl->x+parent->x, "[x] %s", thdl->wndTitle);
+              } else {
+                mvprintw(thdl->y+parent->y, thdl->x+parent->x, "[ ] %s", thdl->wndTitle);
+              }
             }
           }
         }
@@ -236,6 +242,13 @@ int main(int argc, char** argv){
               }
               }
             }
+              if(mouseEvent.y == thdl->y+thdl->parent->y){
+                if(mouseEvent.x >= thdl->x+thdl->parent->x){
+                  if(mouseEvent.x <= thdl->x+thdl->parent->x+2){
+                    thdl->checkboxChecked = !thdl->checkboxChecked;
+                  }
+                }
+              }
           }
         }
       }
