@@ -6,6 +6,7 @@
 - Button
 - Input
 - Label
+- Checkbox
 ## Documentation
 [API](APIDOCS.md)<br>
 [How to use](HOWTOUSE.md)
