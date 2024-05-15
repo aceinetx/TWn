@@ -21,4 +21,4 @@ If you notice any segmentation faults, please publish it on issues with gdb logs
 - Arch linux
 ## Work-In-Progress/Planned features
 - No-Mouse mode (WIP)
-- Multi Desktop workspaces (Planned)
+- Multi Desktop workspaces (WIP)
