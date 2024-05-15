@@ -1,5 +1,6 @@
 #pragma once
 #include "./window.h"
+#include "./TWNAPPLICATIONRESULT.h"
 
 struct apiSymbolsStore {
   // windowStore functions
@@ -9,5 +10,6 @@ struct apiSymbolsStore {
  THDL* (*getWindowByTitle)(const char*);
  THDL* (*getWindowByIndex)(size_t);
  size_t (*getWindowStoreLength)();
-
+ struct TWnApplicationResult (*runTWnApplication)(const char*);
+ char (*getDesktopId)();
 };

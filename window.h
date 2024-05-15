@@ -12,6 +12,7 @@ typedef struct THDL {
   int w;
   int h;
   int uid;
+  char desktop_id;
 
   struct THDL* parent;
 

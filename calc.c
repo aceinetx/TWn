@@ -45,8 +45,8 @@ void* twnEntry(void *sym)
   THDL window;
   strcpy(window.wndTitle, "TWn Calculator");
   strcpy(window.className, "TWnCalculator");
-  window.x = 1;
-  window.y = 1;
+  window.x = 10;
+  window.y = 10;
   window.w = 70;
   window.h = 15;
   window.winflags = THDL_NORESIZE;
