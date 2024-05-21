@@ -55,13 +55,6 @@ struct TWnApplicationResult runTWnApplication(const char* fileName){
   return res;
 }
 
-THDL quickstartWindow;
-void welcomeWindowCallback(THDL* sender, int message){
-  if(message == CALLBACK_CLICKED){
-    quickstartWindow.hidden = !quickstartWindow.hidden;
-  }
-}
-
 bool first_frame_rendered = false;
 
 void initScreen(){
