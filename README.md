@@ -14,6 +14,7 @@
 If you notice any segmentation faults, please publish it on issues with gdb logs
 ## Known issues
 - EXTERMELY unstable on 32 bit devices (segfaults, invalid rendering)
+- Doesn't work with msys/cygwin
 ## Tested devices/linux systems
 - Ubuntu 22.04    (Works perfectly)
 - Termux x64      (Works ALMOST perfectly (I noticed some color issues))
