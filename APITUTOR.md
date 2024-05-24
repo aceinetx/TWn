@@ -138,4 +138,4 @@ void* twnEntry(void *sym)
 gcc -o app.so app.c -shared -fPIC<br>
 nothing special
 ## Testing
-Open the TWn, press Z and type "./<yourcompiledappname>". If you've done everything right, you should see a window with everything we added to it
+Open the TWn, press Z and type "./yourcompiledappname". If you've done everything right, you should see a window with everything we added to it
