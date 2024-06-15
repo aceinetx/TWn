@@ -10,6 +10,7 @@ In your .c file you need to include these headers:
 These are necessary to use the api
 ## Entry point
 This function determines where your application will start. In arguments it passes a symbols structure with pointers to api functions
+### Wrap this function in extern "C" if you use c++
 ```c
 THDL label;
 void* twnEntry(void *sym)
