@@ -117,8 +117,6 @@ int main(int argc, char** argv){
     int max_x = getmaxx(stdscr);
     int max_y = getmaxy(stdscr);
 
-    //runTWnApplication("./hehebomb.so");
-
     // drawing
 
     for(int i=0; i<max_y; i++){
