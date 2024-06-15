@@ -29,6 +29,7 @@ void* twnEntry(void* sym){
   wnd.w = 20;
   wnd.x = 0;
   wnd.y = -1;
+  wnd.uid = -53020;
   wnd.hidden = 1;
   symbols.appendWindow(&wnd);
 

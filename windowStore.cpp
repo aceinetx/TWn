@@ -10,7 +10,7 @@ void appendWindow(THDL* window){
 
 void removeWindowByTitle(const char* title){
   int remove_idx = -1;
-  for(int i=0; i<window_store.size(); i++){
+  for(size_t i=0; i<window_store.size(); i++){
     THDL *wnd = window_store.at(i);
     if(strcmp(wnd->wndTitle, title) != 0){
       remove_idx = i;
@@ -22,7 +22,7 @@ void removeWindowByTitle(const char* title){
 
 void removeWindowByUID(int uid){
   int remove_idx = -1;
-  for(int i=0; i<window_store.size(); i++){
+  for(size_t i=0; i<window_store.size(); i++){
     THDL *wnd = window_store.at(i);
     if(wnd->uid == uid){
       remove_idx = i;
@@ -33,7 +33,7 @@ void removeWindowByUID(int uid){
 }
 
 THDL* getWindowByTitle(const char* title){
-  for(int i=0; i<window_store.size(); i++){
+  for(size_t i=0; i<window_store.size(); i++){
     THDL *wnd = window_store.at(i);
     if(strcmp(wnd->wndTitle, title) != 0){
       return wnd;

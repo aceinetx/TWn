@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <ncurses.h>
 #include <unistd.h>
-#include <cstring>
+#include <string.h>
 #include "./window.h"
 #include "./windowStore.h"
 #include <stdbool.h>
@@ -53,6 +53,13 @@ struct TWnApplicationResult runTWnApplication(const char* fileName){
     return res;
   }
   return res;
+}
+
+THDL quickstartWindow;
+void welcomeWindowCallback(THDL* sender, int message){
+  if(message == CALLBACK_CLICKED){
+    quickstartWindow.hidden = !quickstartWindow.hidden;
+  }
 }
 
 bool first_frame_rendered = false;
@@ -205,8 +212,9 @@ int main(int argc, char** argv){
       }
 
       float wndUsage=0;
+      
 
-      for(int i=0; i<getWindowStoreLength(); i++){
+      for(size_t i=0; i<getWindowStoreLength(); i++){
         THDL* wnd = getWindowByIndex(i);
         if(wnd->uid <= -53020 && (wnd->uid >= -53029)){
           
@@ -276,7 +284,7 @@ int main(int argc, char** argv){
               cancelMove = true;
             } else if(mouseEvent.x == (thdl->x+thdl->w) && (mouseEvent.y == thdl->y)){
                   thdl->uid = rand();
-                  for(int j=0; j<getWindowStoreLength(); j++){
+                  for(size_t j=0; j<getWindowStoreLength(); j++){
                     THDL* child = getWindowByIndex(j);
                     if(child->parent == thdl){
                       j--;
