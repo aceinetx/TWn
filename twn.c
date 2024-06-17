@@ -113,9 +113,15 @@ int main(int argc, char** argv){
   mouseEvent.x = 0;
   mouseEvent.y = 0;
 
+  int fcx = 0;
+  int fcy = 0;
+  bool cur_kb_mode = false;
+
   while(true){
     int max_x = getmaxx(stdscr);
     int max_y = getmaxy(stdscr);
+
+    //runTWnApplication("./hehebomb.so");
 
     // drawing
 
@@ -203,6 +209,10 @@ int main(int argc, char** argv){
       mvprintw(0, 0, "%d %d %d %s %ld %d", mouseEvent.y, mouseEvent.x, moving_window, latestError, getWindowStoreLength(), desktop_id);
     }
 
+    if(cur_kb_mode){
+      mvprintw(fcy, fcx, "*");
+    }
+
     if(bottombar){
 
       for(int i=0; i<max_x; i++){
@@ -237,6 +247,20 @@ int main(int argc, char** argv){
 
     int k=wgetch(stdscr);
 
+    bool cur_pressed = (k == KEY_MOUSE);
+    if(cur_kb_mode){
+      if(k == 'u'){
+        cur_pressed = true;
+        
+      }
+    }
+    if(k == 'h') fcx -= 1;
+    if(k == 'l') fcx += 1;
+    if(k == 'j') fcy += 1;
+    if(k == 'k') fcy -= 1;
+
+    if(k == 'o') cur_kb_mode = !cur_kb_mode;
+
     if(moving_window && (movingWindow != NULL)){
       if(!(movingWindow->winflags & THDL_NORESIZE)){
         if(k == 'd') movingWindow->w++;
@@ -266,10 +290,15 @@ int main(int argc, char** argv){
       }
     }
     if(k == 'q') break;
-    else if(k == KEY_MOUSE && (first_frame_rendered)){
+    else if(cur_pressed && (first_frame_rendered)){
       getmouse(&mouseEvent);
 
-      if(mouseEvent.bstate & BUTTON1_PRESSED || (mouseEvent.bstate & BUTTON2_PRESSED) || (mouseEvent.bstate & BUTTON2_RELEASED)){
+      if(cur_kb_mode){
+        mouseEvent.x = fcx; mouseEvent.y = fcy;
+      }
+
+
+      if(mouseEvent.bstate & BUTTON1_PRESSED || (mouseEvent.bstate & BUTTON2_PRESSED) || (mouseEvent.bstate & BUTTON2_RELEASED) || cur_kb_mode){
 
       if(!moving_window){
         for(size_t i=0; i<getWindowStoreLength(); i++){
