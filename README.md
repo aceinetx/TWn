@@ -21,5 +21,5 @@ If you notice any segmentation faults, please publish it on issues with gdb logs
 - Arch linux      (Works perfectly)
 - VSCode terminal (Works perfectly) 
 ## Work-In-Progress/Planned features
-- No-Mouse mode (WIP)
+- No-Mouse mode (Implemented)
 - Multi Desktop workspaces (Implemented)
