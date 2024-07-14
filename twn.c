@@ -134,6 +134,7 @@ int main(int argc, char** argv){
 
     for(size_t i=0; i<getWindowStoreLength(); i++){
       THDL *thdl = getWindowByIndex(i);
+      if(thdl == NULL) continue;
       if(thdl->parent == NULL && (thdl->hidden == 0) && (thdl->desktop_id == desktop_id)){
         for(int j=thdl->y; j<=thdl->h+thdl->y; j++){
           for(int k=thdl->x; k<=thdl->w+thdl->x; k++){
@@ -169,6 +170,7 @@ int main(int argc, char** argv){
 
     for(size_t i=0; i<getWindowStoreLength(); i++){
       THDL *thdl = getWindowByIndex(i);
+      if(thdl == NULL) continue;
       if(thdl->parent != NULL && (thdl->hidden == 0) && (thdl->desktop_id == desktop_id)){
         THDL *parent = thdl->parent;
         for(int j=thdl->y+parent->y; j<thdl->h+thdl->y+parent->y; j++){
